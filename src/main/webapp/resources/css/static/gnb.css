@@ -1,0 +1,11 @@
+.gnb { 
+	padding: 20px 40px;
+	display: flex;
+	align-items: center;
+}
+.gnb__list { list-style: none; }
+.gnb__item {
+    float: left;
+    margin-right: 10px;
+}
+.gnb__item:last-child { margin-right: 0;}

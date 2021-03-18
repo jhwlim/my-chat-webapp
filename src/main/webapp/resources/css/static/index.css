@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login {
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+.login__title {
+    text-align: center;
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+.login__input {
+    margin-bottom: 10px;
+}
+.login__input:last-child {
+    margin-bottom: 0;
+}
+.login__input[type=text] {
+    padding: 4px 8px;
+}
+.login__input--submit {
+    display: block;
+    width: 100%;
+}
