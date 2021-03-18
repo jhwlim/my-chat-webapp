@@ -1,17 +1,17 @@
-package com.spring.study.login.service.impl;
+package com.spring.study.user.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.study.login.mapper.LoginMapper;
-import com.spring.study.login.service.LoginService;
 import com.spring.study.model.User;
+import com.spring.study.user.mapper.UserFindMapper;
+import com.spring.study.user.service.UserFindService;
 
 @Service
-public class LoginServiceImpl implements LoginService {
+public class UserFindServiceImpl implements UserFindService {
 
 	@Autowired
-	LoginMapper mapper;
+	UserFindMapper mapper;
 	
 	@Override
 	public User selectUserById(String id) {

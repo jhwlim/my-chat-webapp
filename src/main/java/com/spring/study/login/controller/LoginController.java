@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.spring.study.login.service.LoginService;
 import com.spring.study.model.User;
+import com.spring.study.user.service.UserFindService;
 
 import lombok.extern.log4j.Log4j;
 
@@ -17,7 +17,7 @@ import lombok.extern.log4j.Log4j;
 public class LoginController {
 	
 	@Autowired
-	LoginService service;
+	UserFindService ufs;
 	
 	@GetMapping(value = "/")
 	public String checkLoginSession(HttpSession session) {
@@ -30,7 +30,7 @@ public class LoginController {
 	public String checkLogin(User user, HttpSession session) {
 		log.info("user=" + user);
 		
-		User result = service.selectUserById(user.getId());
+		User result = ufs.selectUserById(user.getId());
 		log.info("result=" + result);
 		if (result != null) {
 			session.setAttribute("user", result);

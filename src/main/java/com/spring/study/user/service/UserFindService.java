@@ -1,8 +1,8 @@
-package com.spring.study.login.service;
+package com.spring.study.user.service;
 
 import com.spring.study.model.User;
 
-public interface LoginService {
+public interface UserFindService {
 	
 	public User selectUserById(String id);
 	
