@@ -23,7 +23,7 @@ public class LoginController {
 	public String checkLoginSession(HttpSession session) {
 		User loginUser = (User) session.getAttribute("user");
 		
-		return loginUser == null ? "index" : "chat/list";
+		return loginUser == null ? "login" : "index";
 	}
 	
 	@PostMapping(value = "/login")

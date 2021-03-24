@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <div class="gnb">
     <ul class="gnb__list">
+    	<li class="gnb__item"><a href="<c:url value='/talk'/>">채팅방</a></li>
         <li class="gnb__item"><a href="<c:url value='/logout'/>">로그아웃</a></li>
-        <li class="gnb__item">menu2</li>
     </ul>
 </div>
