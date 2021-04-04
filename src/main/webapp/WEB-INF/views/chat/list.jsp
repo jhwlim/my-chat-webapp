@@ -34,7 +34,7 @@
     <div class="chat">
         <h2 class="chat__title">최근 대화 목록</h2>
         <ul class="chat__users">
-            <li class="chat__user" ondblclick="location.href='/talk/test01;'">
+            <li class="chat__user" ondblclick="location.href='talk/test01';">
                 <div class="chat__figure">
                     <img src="<c:url value='/resources/image/chat/user1.png'/>" alt="" class="chat__img">
                 </div>
@@ -48,8 +48,8 @@
                     </div>    
                 </div>
             </li>
-            <li class="chat__user">
-                <div class="chat__figure" ondblclick="loation.href='/talk/test02;'">
+            <li class="chat__user" ondblclick="loation.href='talk/test02';">
+                <div class="chat__figure">
                     <img src="<c:url value='/resources/image/chat/user1.png'/>" alt="" class="chat__img">
                 </div>
                 <div class="chat__info">
