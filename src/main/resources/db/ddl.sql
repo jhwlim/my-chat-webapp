@@ -1,24 +1,36 @@
-DROP TABLE messages;
-DROP SEQUENCE message_seq;
 DROP TABLE users;
-DROP SEQUENCE user_seq;
+DROP TABLE messages;
+DROP TABLE message_text;
+DROP TABLE message_file;
 
 CREATE TABLE users (
-    seq_id NUMBER PRIMARY KEY,
-    id VARCHAR2(30) UNIQUE,
-    name VARCHAR2(30),
-    image VARCHAR2(255)
+    seq_id INT PRIMARY KEY AUTO_INCREMENT,
+    id VARCHAR(30) UNIQUE,
+    name VARCHAR(30),
+    image VARCHAR(255)
 );
-
-CREATE SEQUENCE user_seq START WITH 1 INCREMENT BY 1 NOCACHE;
 
 CREATE TABLE messages (
-    seq_id NUMBER PRIMARY KEY,
-    sender NUMBER
-        CONSTRAINT msg_sender_fk REFERENCES users(seq_id),
-    receiver NUMBER
-        CONSTRAINT msg_receiver_fk REFERENCES users(seq_id),
-    send_date TIMESTAMP
+    seq_id INT PRIMARY KEY AUTO_INCREMENT,
+    sender INT,
+    CONSTRAINT msg_sender_fk FOREIGN KEY (sender)
+        REFERENCES users (seq_id),
+    receiver INT,
+    CONSTRAINT msg_receiver_fk FOREIGN KEY (receiver)
+        REFERENCES users (seq_id),
+    send_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE SEQUENCE message_seq START WITH 1 INCREMENT BY 1 NOCACHE;
+CREATE TABLE message_text (
+	msg_id INT PRIMARY KEY,
+    CONSTRAINT msgtext_id_fk FOREIGN KEY (msg_id)
+		REFERENCES messages (seq_id),
+    content VARCHAR(255)
+);
+
+CREATE TABLE message_file (
+	msg_id INT PRIMARY KEY,
+    CONSTRAINT msgfile_id_fk FOREIGN KEY (msg_id)
+		REFERENCES messages (seq_id),
+	path VARCHAR(255)
+);

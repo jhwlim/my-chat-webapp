@@ -19,7 +19,7 @@
     }
     
     function connect() {
-        var socket = new SockJS('/chat');
+        var socket = new SockJS('<c:url value="/ws" />');
         stompClient = Stomp.over(socket);  
         stompClient.connect({}, function(frame) {
             setConnected(true);
@@ -41,7 +41,7 @@
     function sendMessage() {
         var from = document.getElementById('from').value;
         var text = document.getElementById('text').value;
-        stompClient.send("/app/chat", {}, 
+        stompClient.send('/app/chat', {}, 
           JSON.stringify({'from':from, 'text':text}));
     }
     
