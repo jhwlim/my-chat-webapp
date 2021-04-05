@@ -8,7 +8,7 @@
 <script src="<c:url value = '/resources/js/sockjs-0.3.4.js'/>"></script> 
 <script src="<c:url value = '/resources/js/stomp.js'/>"></script>
 <script type="text/javascript">
-    var socket = null;
+    var stompClient = null;
     
     function setConnected(connected) {
         document.getElementById('connect').disabled = connected;
@@ -19,48 +19,38 @@
     }
     
     function connect() {
-        socket = new SockJS('<c:url value="/ws" />');
-        // stompClient = Stomp.over(socket);  
-        socket.onopen = function(evt) {
-        	console.log(evt);
-        	setConnected(true);
-        };
-        
-        socket.onmessage = function(evt) {
-        	showMessageOutput(evt.data);
-        	console.log(evt);
-        };
-        
-        socket.onclose = function(evt) {
-        	console.log(evt);
-        	disconnect();
-        }
+        var socket = new SockJS('<c:url value="/ws" />');
+        stompClient = Stomp.over(socket);  
+        stompClient.connect({}, function(frame) {
+            setConnected(true);
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/messages', function(messageOutput) {
+                showMessageOutput(JSON.parse(messageOutput.body));
+            });
+        });
     }
     
     function disconnect() {
-    	if (socket != null) {
-	    	socket.close();    		
-    	}
-    	
-    	setConnected(false);
+        if(stompClient != null) {
+            stompClient.disconnect();
+        }
+        setConnected(false);
         console.log("Disconnected");
     }
     
     function sendMessage() {
         var from = document.getElementById('from').value;
         var text = document.getElementById('text').value;
-        
-        socket.send(JSON.stringify({'from':from, 'text':text}));
+        stompClient.send('/app/chat', {}, 
+          JSON.stringify({'from':from, 'text':text}));
     }
     
     function showMessageOutput(messageOutput) {
-    	var message = JSON.parse(messageOutput);
-    	
         var response = document.getElementById('response');
         var p = document.createElement('p');
         p.style.wordWrap = 'break-word';
-        p.appendChild(document.createTextNode(message.from + ": " 
-          + message.text + " (" + message.time + ")"));
+        p.appendChild(document.createTextNode(messageOutput.from + ": " 
+          + messageOutput.text + " (" + messageOutput.time + ")"));
         response.appendChild(p);
     }
 </script>

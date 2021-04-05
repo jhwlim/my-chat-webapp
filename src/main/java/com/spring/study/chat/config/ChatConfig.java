@@ -1,26 +1,24 @@
 package com.spring.study.chat.config;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
-import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
-import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
+
+import com.spring.study.chat.handler.MessageHandler;
 
 @Configuration
-@EnableWebSocketMessageBroker
-public class ChatConfig implements WebSocketMessageBrokerConfigurer {
+@EnableWebSocket
+public class ChatConfig implements WebSocketConfigurer {
 
 	@Override
-	public void configureMessageBroker(MessageBrokerRegistry config) {
-		config.enableSimpleBroker("/topic");
-		config.setApplicationDestinationPrefixes("/app"); // 클라이언트로부터 메시지를 받을 prefix 설정
+	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+		registry
+			.addHandler(new MessageHandler(), "/ws")
+			.addInterceptors(new HttpSessionHandshakeInterceptor())
+			.withSockJS();
 	}
 	
-	@Override
-	public void registerStompEndpoints(StompEndpointRegistry registry) { // 클라이언트에서 연결할 경로 설정, endpoint 설정
-		registry.addEndpoint("/ws");
-		registry.addEndpoint("/ws").withSockJS();
-	}
 	
 }
