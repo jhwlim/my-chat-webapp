@@ -19,8 +19,7 @@
     }
     
     function connect() {
-        socket = new SockJS('<c:url value="/ws" />');
-        // stompClient = Stomp.over(socket);  
+        socket = new SockJS('<c:url value="/ws/${toUser.id}" />');
         socket.onopen = function(evt) {
         	console.log(evt);
         	setConnected(true);
@@ -46,11 +45,19 @@
         console.log("Disconnected");
     }
     
-    function sendMessage() {
-        var from = document.getElementById('from').value;
+    
+    function sendMessage(data) {
+    	var to = "${toUser.id}";
+    	var toSeqId = ${toUser.seqId};
         var text = document.getElementById('text').value;
         
-        socket.send(JSON.stringify({'from':from, 'text':text}));
+        data = {
+        	"toSeqId" : toSeqId,
+        	"to" : to,
+        	"text" : text,
+        };
+        
+        socket.send(JSON.stringify(data));
     }
     
     function showMessageOutput(messageOutput) {
@@ -65,7 +72,7 @@
     }
 </script>
 </head>
-<body onload="disconnect()">
+<body onload="connect();">
     <div>
         <div>
             <input type="text" id="from" placeholder="Choose a nickname"/>

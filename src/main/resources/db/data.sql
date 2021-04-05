@@ -1,6 +1,8 @@
 -- 회원 데이터
 INSERT INTO users(id, name) VALUES('test01', '테스트01');
 INSERT INTO users(id, name) VALUES('test02', '테스트02');
+INSERT INTO users(id, name) VALUES('test03', '테스트03');
+INSERT INTO users(id, name) VALUES('test04', '테스트04');
 
 -- 메시지 데이터
 INSERT INTO messages(sender, receiver) VALUES(1, 2);

@@ -48,7 +48,7 @@
                     </div>    
                 </div>
             </li>
-            <li class="chat__user" ondblclick="loation.href='talk/test02';">
+            <li class="chat__user" ondblclick="location.href='talk/test02';">
                 <div class="chat__figure">
                     <img src="<c:url value='/resources/image/chat/user1.png'/>" alt="" class="chat__img">
                 </div>
