@@ -16,8 +16,8 @@ INSERT INTO message_file(msg_id, path) VALUES(3, "/test.png");
 -- 만약, content가 null 이라면, file
 SELECT
 	msg.*,
-    text.content,
-    file.path
+    text.content as text,
+    file.path as file
 FROM
 	messages msg
     LEFT JOIN message_text text

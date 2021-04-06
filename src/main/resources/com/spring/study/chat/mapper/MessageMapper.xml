@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.study.chat.mapper.MessageMapper">
+
+	<insert id="insertMessage" useGeneratedKeys="true" keyProperty="seqId">
+		INSERT INTO 
+			messages(sender, receiver) 
+		VALUES (
+			#{sender}, #{receiver}
+		)
+	</insert>
+	
+	<insert id="insertText">
+		INSERT INTO 
+			message_text(msg_id, content) 
+		VALUES(
+			#{seqId}, #{text}
+		)
+	</insert>
+	
+	<select id="selectMessageBySeqId" resultType="OutputMessage">
+		SELECT
+			msg.*,
+		    text.content as text,
+		    file.path as file
+		FROM
+			messages msg
+		    LEFT JOIN message_text text
+		    ON msg.seq_id = text.msg_id
+			LEFT JOIN message_file file
+		    ON msg.seq_id = file.msg_id
+		WHERE
+			msg.seq_id = #{seqId}
+	</select>
+	
+</mapper>

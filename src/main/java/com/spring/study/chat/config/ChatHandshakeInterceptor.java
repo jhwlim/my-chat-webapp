@@ -32,13 +32,13 @@ public class ChatHandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 		ServletServerHttpRequest ssreq = (ServletServerHttpRequest) request;
 		HttpServletRequest req = ssreq.getServletRequest();
 		User user = (User) req.getSession().getAttribute("user");
-		log.info("user=" + user);
+		log.info("sender=" + user);
 		
-		String to = getUserIdFromURI(req.getRequestURI());
-		log.info("to=" + to);
+		String receiverId = getUserIdFromURI(req.getRequestURI());
+		log.info("receiver=" + receiverId);
 		
-		attributes.put("user", user);
-		attributes.put("to", to);
+		attributes.put("sender", user);
+		attributes.put("receiver", receiverId);
 	}
 	
 	private String getUserIdFromURI(String uri) {

@@ -34,3 +34,4 @@ CREATE TABLE message_file (
 		REFERENCES messages (seq_id),
 	path VARCHAR(255)
 );
+x

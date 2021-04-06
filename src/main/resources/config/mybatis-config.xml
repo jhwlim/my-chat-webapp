@@ -10,7 +10,7 @@
 	
 	<typeAliases>
 		<package name="com.spring.study.model"/>
-		<package name="com.spring.study.**.model"/>
+		<package name="com.spring.study.chat.model"/>
 	</typeAliases>
 	
 </configuration>

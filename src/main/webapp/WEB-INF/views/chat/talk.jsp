@@ -47,13 +47,13 @@
     
     
     function sendMessage(data) {
-    	var to = "${toUser.id}";
-    	var toSeqId = ${toUser.seqId};
-        var text = document.getElementById('text').value;
+    	var receiver = ${toUser.seqId};
+        var receiverId = "${toUser.id}";
+    	var text = document.getElementById('text').value;
         
         data = {
-        	"toSeqId" : toSeqId,
-        	"to" : to,
+        	"receiver" : receiver,
+        	"receiverId" : receiverId,
         	"text" : text,
         };
         
@@ -61,13 +61,14 @@
     }
     
     function showMessageOutput(messageOutput) {
+    	var senderId = "${toUser.id}";
     	var message = JSON.parse(messageOutput);
     	
         var response = document.getElementById('response');
         var p = document.createElement('p');
         p.style.wordWrap = 'break-word';
-        p.appendChild(document.createTextNode(message.from + ": " 
-          + message.text + " (" + message.time + ")"));
+        p.appendChild(document.createTextNode(senderId + ": " 
+          + message.text + " (" + message.sendDate + ")"));
         response.appendChild(p);
     }
 </script>
