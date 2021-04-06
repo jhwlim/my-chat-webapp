@@ -61,14 +61,13 @@
     }
     
     function showMessageOutput(messageOutput) {
-    	var senderId = "${toUser.id}";
     	var message = JSON.parse(messageOutput);
     	
         var response = document.getElementById('response');
         var p = document.createElement('p');
         p.style.wordWrap = 'break-word';
-        p.appendChild(document.createTextNode(senderId + ": " 
-          + message.text + " (" + message.sendDate + ")"));
+        p.appendChild(document.createTextNode(message.senderId + ": " 
+          + message.text + " (" + message.sendDateTime + ")"));
         response.appendChild(p);
     }
 </script>

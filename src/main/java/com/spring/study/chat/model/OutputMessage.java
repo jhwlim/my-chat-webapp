@@ -1,21 +1,30 @@
 package com.spring.study.chat.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@ToString
 @Alias("OutputMessage")
 public class OutputMessage {
 
-	private String sender;
+	private int sender;
+	@Setter
+	private String senderId;
 	private String text;
-	private Date sendDate;
+	private String sendDateTime;
+	
+	public void setSendDate(Date sendDate) {
+		DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+		this.sendDateTime = dateFormat.format(sendDate);
+	}
 	
 }

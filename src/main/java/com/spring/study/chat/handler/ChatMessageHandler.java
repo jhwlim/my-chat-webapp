@@ -58,6 +58,7 @@ public class ChatMessageHandler extends TextWebSocketHandler {
 		m.setSender(user.getSeqId());
 		
 		OutputMessage output = service.insertMessage(m);
+		output.setSenderId(user.getId());
 		log.info("output message=" + output);
 		
 		// '나'의 세션 중 해당 상대방 아이디 세션에게 메시지 보내기
