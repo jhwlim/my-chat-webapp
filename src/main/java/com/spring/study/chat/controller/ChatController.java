@@ -37,13 +37,13 @@ public class ChatController {
 			return "redirect:/talk";
 		}
 		
-		User toUser = userFindService.selectUserById(id);
-		if (toUser == null) {
+		User receiver = userFindService.selectUserById(id);
+		if (receiver == null) {
 			log.warn(id + " is NOT FOUND");;
 			return "redirect:/talk";
 		}
 		
-		model.addAttribute("toUser", toUser);
+		model.addAttribute("receiver", receiver);
 		return "chat/talk";
 	}
 	
