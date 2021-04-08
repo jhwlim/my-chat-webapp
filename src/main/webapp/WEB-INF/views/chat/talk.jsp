@@ -9,9 +9,9 @@
 <script src="<c:url value = '/resources/js/stomp.js'/>"></script>
 <script type="text/javascript">
     var socket = null;
-    
+   
     function connect() {
-        socket = new SockJS('<c:url value="/ws/${toUser.id}" />');
+        socket = new SockJS('<c:url value="/ws/${receiver.id}" />');
         socket.onopen = function(evt) {
         	console.log(evt);
         };
@@ -50,6 +50,10 @@
           + message.text + " (" + message.sendDateTime + ")"));
         response.prepend(p);
     }
+    
+    window.onload = function() {
+    	connect();
+    }
 </script>
 </head>
 <body>
@@ -59,26 +63,30 @@
     <button id="sendMessage" onclick="sendMessage();">Send</button>        
 </div>
 
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script>
-$(document).ready(function() {
-	connect();	
 	
-	// 이전 채팅 내역 가져오기
-	var data = {
-		receiver : ${receiver.seqId},
-		pageIndex : 0
-	};
-	
-	$.ajax({
-		url : '<c:url value="/message" />',
-		data : data,
-		success : function(result) {
-			console.log(result);
-		}
+	$(document).ready(function() {
+		
+		var data = {
+			receiver : ${receiver.seqId},
+			pageIndex : 0
+		};
+		
+		$.ajax({
+			url : '<c:url value="/message" />',
+			data : data,
+			success : function(result) {
+				console.log(result);
+				
+				// 1. 불러온 데이터 html에 추가하기
+				// 2. 스크롤 올렸을 때 데이터 더 가져오기
+			}
+		});
 	});
-});
-
+	
 </script>
+
 </body>
 </html>

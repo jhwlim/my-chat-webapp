@@ -35,4 +35,35 @@
 			msg.seq_id = #{seqId}
 	</select>
 	
+	<select id="selectMessages" resultType="OutputMessage">
+		SELECT
+			msg.*,
+		    text.content as text,
+		    file.path as file
+		FROM
+			messages msg
+		    LEFT JOIN message_text text
+		    ON msg.seq_id = text.msg_id
+			LEFT JOIN message_file file
+		    ON msg.seq_id = file.msg_id
+		WHERE (
+			sender = #{sender} AND receiver = #{receiver}
+		) OR (
+			sender = #{receiver} AND receiver = #{sender}
+		)
+		ORDER BY seq_id
+		LIMIT #{pageStart}, ${pageCount}
+	</select>
+	
+	<select id="selectTotalCountOfMessages" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			messages
+		WHERE (
+			sender = #{sender} AND receiver = #{receiver}
+		) OR (
+			sender = #{receiver} AND receiver = #{sender}
+		)
+	</select>
 </mapper>

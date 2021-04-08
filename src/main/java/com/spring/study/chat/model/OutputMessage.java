@@ -20,9 +20,17 @@ public class OutputMessage {
 	@Setter
 	private String senderId;
 	private String text;
+	private String sendDate;
 	private String sendDateTime;
 	
 	public void setSendDate(Date sendDate) {
+		DateFormat dateFormat = new SimpleDateFormat("YYYY년 M월 d일 E요일");		
+		this.sendDate = dateFormat.format(sendDate);
+		
+		setSendDateTime(sendDate);
+	}
+	
+	private void setSendDateTime(Date sendDate) {
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm");
 		this.sendDateTime = dateFormat.format(sendDate);
 	}
