@@ -1,63 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/include/jstl.jspf" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <title>Chat WebSocket</title>
 <script src="<c:url value = '/resources/js/sockjs-0.3.4.js'/>"></script> 
-<script src="<c:url value = '/resources/js/stomp.js'/>"></script>
 <script type="text/javascript">
     var socket = null;
     
-    function setConnected(connected) {
-        document.getElementById('connect').disabled = connected;
-        document.getElementById('disconnect').disabled = !connected;
-        document.getElementById('conversationDiv').style.visibility 
-          = connected ? 'visible' : 'hidden';
-        document.getElementById('response').innerHTML = '';
-    }
-    
     function connect() {
-        socket = new SockJS('<c:url value="/ws/${toUser.id}" />');
+        socket = new SockJS('<c:url value="/ws/${chatRoomId}" />');
         socket.onopen = function(evt) {
-        	console.log(evt);
-        	setConnected(true);
+        	console.log("connected");
         };
         
         socket.onmessage = function(evt) {
         	showMessageOutput(evt.data);
-        	console.log(evt);
         };
         
         socket.onclose = function(evt) {
-        	console.log(evt);
-        	disconnect();
+        	console.log("Disconnected");
         }
     }
     
-    function disconnect() {
-    	if (socket != null) {
-	    	socket.close();    		
-    	}
-    	
-    	setConnected(false);
-        console.log("Disconnected");
-    }
-    
-    
     function sendMessage(data) {
-    	var to = "${toUser.id}";
-    	var toSeqId = ${toUser.seqId};
-        var text = document.getElementById('text').value;
-        
-        data = {
-        	"toSeqId" : toSeqId,
-        	"to" : to,
-        	"text" : text,
-        };
-        
-        socket.send(JSON.stringify(data));
+    	var text = document.getElementById('text').value;
+    
+        socket.send(JSON.stringify({"text" : text}));
     }
     
     function showMessageOutput(messageOutput) {
@@ -74,17 +44,6 @@
 </head>
 <body onload="connect();">
     <div>
-        <div>
-            <input type="text" id="from" placeholder="Choose a nickname"/>
-        </div>
-        <br />
-        <div>
-            <button id="connect" onclick="connect();">Connect</button>
-            <button id="disconnect" disabled="disabled" onclick="disconnect();">
-                Disconnect
-            </button>
-        </div>
-        <br />
         <div id="conversationDiv">
             <input type="text" id="text" placeholder="Write a message..."/>
             <button id="sendMessage" onclick="sendMessage();">Send</button>

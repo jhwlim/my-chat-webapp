@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.study.chat.mapper.ChatUserMapper">
+
+	<select id="selectCountByChatRoomIdAndUserSeqId" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			chat_user
+		WHERE
+			chat_room_id = #{chatRoomId} AND user_seq_id = #{userSeqId}
+	</select>
+
+	<select id="selectChatRoomId" resultType="int">
+		SELECT
+			chat_room_id
+		FROM
+			chat_user
+		WHERE
+			user_seq_id = #{user1}
+		    AND chat_room_id IN (
+				SELECT
+					chat_room_id
+				FROM
+					chat_user
+				WHERE
+					user_seq_id = #{user2}
+			)
+	</select>
+	
+</mapper>

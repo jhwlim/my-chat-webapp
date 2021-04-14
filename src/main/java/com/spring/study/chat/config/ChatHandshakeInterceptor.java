@@ -34,14 +34,14 @@ public class ChatHandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 		User user = (User) req.getSession().getAttribute("user");
 		log.info("user=" + user);
 		
-		String to = getUserIdFromURI(req.getRequestURI());
-		log.info("to=" + to);
+		int chatRoomId = Integer.parseInt(getChatRoomIdFromURI(req.getRequestURI()));
+		log.info("chatRoomId=" + chatRoomId);
 		
 		attributes.put("user", user);
-		attributes.put("to", to);
+		attributes.put("chatRoomId", chatRoomId);
 	}
 	
-	private String getUserIdFromURI(String uri) {
+	private String getChatRoomIdFromURI(String uri) {
 		String prefix = "/ws/";
 		int idx = uri.indexOf(prefix) + prefix.length();
 		return uri.substring(idx, uri.indexOf("/", idx));
