@@ -12,10 +12,10 @@ public interface MessageMapper {
 	
 	public void insertText(InputMessage message);
 	
-	public OutputMessage selectMessageBySeqId(int seqId);
+	public OutputMessage selectMessageById(int id);
 	
-	public List<OutputMessage> selectMessages(MessagePage info);
+	public List<OutputMessage> selectMessagesByChatRoomId(MessagePage info);
 	
-	public int selectTotalCountOfMessages(MessagePage info);
+	public int selectTotalCountOfMessageByChatRoomId(int chatRoomId);
 	
 }

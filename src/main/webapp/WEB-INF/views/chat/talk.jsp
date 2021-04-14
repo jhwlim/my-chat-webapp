@@ -38,7 +38,7 @@
         p.style.wordWrap = 'break-word';
         p.appendChild(document.createTextNode(message.senderId + ": " 
           + message.text + " (" + message.sendDateTime + ")"));
-        response.prepend(p);
+        response.appendChild(p);
     }
     
     window.onload = function() {
@@ -47,7 +47,7 @@
 </script>
 </head>
 <body>
-<div class="conversation" id="converation"></div>
+<div class="conversation" id="conversation"></div>
 <div id="send">
 	<input type="text" id="text" placeholder="Write a message..."/>
     <button id="sendMessage" onclick="sendMessage();">Send</button>        
@@ -59,6 +59,7 @@
 	$(document).ready(function() {
 		
 		var data = {
+			chatRoomId : ${chatRoomId},
 			pageIndex : 0,
 		};
 		

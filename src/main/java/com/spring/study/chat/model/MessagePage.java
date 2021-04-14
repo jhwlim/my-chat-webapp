@@ -11,7 +11,7 @@ import lombok.ToString;
 public class MessagePage {
 
 	private int sender;
-	private int receiver;
+	private int chatRoomId;
 	
 	@Setter(AccessLevel.NONE)
 	private int pageIndex;

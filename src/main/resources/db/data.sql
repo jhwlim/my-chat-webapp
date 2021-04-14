@@ -5,12 +5,8 @@ INSERT INTO users(id, name) VALUES('test03', '테스트03');
 INSERT INTO users(id, name) VALUES('test04', '테스트04');
 
 -- 메시지 데이터
-INSERT INTO messages(sender, receiver) VALUES(1, 2);
-INSERT INTO message_text(msg_id, content) VALUES(1, "Hello");
-INSERT INTO messages(sender, receiver) VALUES(1, 2);
-INSERT INTO message_text(msg_id, content) VALUES(2, "Hi");
-INSERT INTO messages(sender, receiver) VALUES(1, 2);
-INSERT INTO message_file(msg_id, path) VALUES(3, "/test.png");
+INSERT INTO messages(sender, chat_room_id) VALUES(1, 1);
+INSERT INTO message_text(message_id, content) VALUES(1, "Hello");
 
 -- 채팅방 데이터
 INSERT INTO chat_room(type) VALUES(1);

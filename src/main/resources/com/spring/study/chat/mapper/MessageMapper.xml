@@ -4,66 +4,61 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.study.chat.mapper.MessageMapper">
 
-	<insert id="insertMessage" useGeneratedKeys="true" keyProperty="seqId">
+	<insert id="insertMessage" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
-			messages(sender, receiver) 
+			messages(sender, chat_room_id) 
 		VALUES (
-			#{sender}, #{receiver}
+			#{sender}, #{chatRoomId}
 		)
 	</insert>
 	
 	<insert id="insertText">
 		INSERT INTO 
-			message_text(msg_id, content) 
+			message_text(message_id, content) 
 		VALUES(
-			#{seqId}, #{text}
+			#{id}, #{text}
 		)
 	</insert>
 	
-	<select id="selectMessageBySeqId" resultType="OutputMessage">
-		SELECT
-			msg.*,
-		    text.content as text,
-		    file.path as file
+	<select id="selectMessageById" resultType="OutputMessage">
+		SELECT 
+		    msg.*, text.content AS text, file.path AS file
 		FROM
-			messages msg
-		    LEFT JOIN message_text text
-		    ON msg.seq_id = text.msg_id
-			LEFT JOIN message_file file
-		    ON msg.seq_id = file.msg_id
-		WHERE
-			msg.seq_id = #{seqId}
+		    messages msg
+		        LEFT JOIN
+		    message_text text ON msg.id = text.message_id
+		        LEFT JOIN
+		    message_file file ON msg.id = file.message_id
+		WHERE 
+			msg.id = #{id};
 	</select>
 	
-	<select id="selectMessages" resultType="OutputMessage">
-		SELECT
-			msg.*,
-		    text.content as text,
-		    file.path as file
+	<select id="selectMessagesByChatRoomId" resultType="OutputMessage">
+		SELECT 
+		    msg.*, 
+		    text.content AS text, 
+		    file.path AS file,
+		    users.id AS sender_id
 		FROM
-			messages msg
-		    LEFT JOIN message_text text
-		    ON msg.seq_id = text.msg_id
-			LEFT JOIN message_file file
-		    ON msg.seq_id = file.msg_id
-		WHERE (
-			sender = #{sender} AND receiver = #{receiver}
-		) OR (
-			sender = #{receiver} AND receiver = #{sender}
-		)
-		ORDER BY seq_id
+		    messages msg
+		        LEFT JOIN
+		    message_text text ON msg.id = text.message_id
+		        LEFT JOIN
+		    message_file file ON msg.id = file.message_id
+			    LEFT JOIN
+			users ON msg.sender = users.seq_id
+		WHERE
+			chat_room_id = #{chatRoomId}
+		ORDER BY id
 		LIMIT #{pageStart}, ${pageCount}
 	</select>
 	
-	<select id="selectTotalCountOfMessages" resultType="int">
+	<select id="selectTotalCountOfMessageByChatRoomId" resultType="int">
 		SELECT
 			COUNT(*)
 		FROM
 			messages
-		WHERE (
-			sender = #{sender} AND receiver = #{receiver}
-		) OR (
-			sender = #{receiver} AND receiver = #{sender}
-		)
+		WHERE 
+			chat_room_id = #{chatRoomId}
 	</select>
 </mapper>

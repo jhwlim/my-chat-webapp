@@ -13,27 +13,27 @@ CREATE TABLE users (
 );
 
 CREATE TABLE messages (
-    seq_id INT PRIMARY KEY AUTO_INCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     sender INT,
     CONSTRAINT msg_sender_fk FOREIGN KEY (sender)
         REFERENCES users (seq_id),
-    receiver INT,
-    CONSTRAINT msg_receiver_fk FOREIGN KEY (receiver)
-        REFERENCES users (seq_id),
+    chat_room_id INT,
+    CONSTRAINT msg_chatroom_fk FOREIGN KEY (chat_room_id)
+        REFERENCES chat_room (id),
     send_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE message_text (
-	msg_id INT PRIMARY KEY,
-    CONSTRAINT msgtext_id_fk FOREIGN KEY (msg_id)
-		REFERENCES messages (seq_id),
+	message_id INT PRIMARY KEY,
+    CONSTRAINT messagetext_id_fk FOREIGN KEY (message_id)
+		REFERENCES messages (id),
     content VARCHAR(255)
 );
 
 CREATE TABLE message_file (
-	msg_id INT PRIMARY KEY,
-    CONSTRAINT msgfile_id_fk FOREIGN KEY (msg_id)
-		REFERENCES messages (seq_id),
+	message_id INT PRIMARY KEY,
+    CONSTRAINT messagefile_id_fk FOREIGN KEY (message_id)
+		REFERENCES messages (id),
 	path VARCHAR(255)
 );
 

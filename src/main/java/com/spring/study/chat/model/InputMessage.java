@@ -8,10 +8,9 @@ import lombok.Data;
 @Alias("InputMessage")
 public class InputMessage {
 
-	private int seqId;
+	private int id;
 	private int sender;
-	private int receiver;
-	private String receiverId;
+	private int chatRoomId;
 	private String text;
 
 }

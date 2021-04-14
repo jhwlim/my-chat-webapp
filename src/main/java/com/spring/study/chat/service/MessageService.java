@@ -10,8 +10,8 @@ public interface MessageService {
 
 	public OutputMessage insertMessage(InputMessage message);
 	
-	public List<OutputMessage> selectMessages(MessagePage info);
+	public List<OutputMessage> selectMessagesByChatRoomId(MessagePage info);
 	
-	public int selectTotalCountOfMessages(MessagePage info);
+	public int selectTotalCountOfMessageByChatRoomId(int chatRoomId);
 	
 }

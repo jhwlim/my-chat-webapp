@@ -37,7 +37,7 @@ public class MessageServiceImpl implements MessageService {
 			mapper.insertText(message);
 			
 			transactionManager.commit(txStatus);
-			return mapper.selectMessageBySeqId(message.getSeqId());
+			return mapper.selectMessageById(message.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 			transactionManager.rollback(txStatus);
@@ -47,15 +47,14 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	@Override
-	public List<OutputMessage> selectMessages(MessagePage info) {
-		return mapper.selectMessages(info);
+	public List<OutputMessage> selectMessagesByChatRoomId(MessagePage info) {
+		return mapper.selectMessagesByChatRoomId(info);
 	}
 
 
 	@Override
-	public int selectTotalCountOfMessages(MessagePage info) {
-		return mapper.selectTotalCountOfMessages(info);
+	public int selectTotalCountOfMessageByChatRoomId(int chatRoomId) {
+		return mapper.selectTotalCountOfMessageByChatRoomId(chatRoomId);
 	}
 
-	
 }

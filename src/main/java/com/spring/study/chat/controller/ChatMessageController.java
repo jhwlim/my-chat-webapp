@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spring.study.chat.model.MessagePage;
 import com.spring.study.chat.model.OutputMessagePage;
 import com.spring.study.chat.service.MessageService;
-import com.spring.study.model.User;
 
 import lombok.extern.log4j.Log4j;
 
@@ -22,12 +21,11 @@ public class ChatMessageController {
 	
 	@GetMapping("/message")
 	public OutputMessagePage getMessages(MessagePage info, HttpSession session) {
-		User user = (User) session.getAttribute("user");
-		info.setSender(user.getSeqId());
+		log.info("info=" + info);
 		
 		OutputMessagePage result = new OutputMessagePage();
-		result.setMessages(service.selectMessages(info));
-		result.setNext(info.getPageStart(), info.getPageCount(), service.selectTotalCountOfMessages(info));
+		result.setMessages(service.selectMessagesByChatRoomId(info));
+		result.setNext(info.getPageStart(), info.getPageCount(), service.selectTotalCountOfMessageByChatRoomId(info.getChatRoomId()));
 		log.info("result=" + result);
 		
 		return result;

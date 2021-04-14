@@ -50,10 +50,10 @@ public class ChatMessageHandler extends TextWebSocketHandler {
 		
 		String payload = message.getPayload();
 		InputMessage m = gson.fromJson(payload, InputMessage.class);
-		log.info("payload=" + m);
 		
 		// 메시지 DB에 저장하고, 저장된 메시지 정보를 DB에서 가져오기 
 		m.setSender(user.getSeqId());
+		m.setChatRoomId(chatRoomId);
 		
 		OutputMessage output = service.insertMessage(m);
 		output.setSenderId(user.getId());
