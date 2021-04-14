@@ -6,11 +6,12 @@ import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
 
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+@AllArgsConstructor
 @Getter
 @ToString
 @Alias("OutputMessage")

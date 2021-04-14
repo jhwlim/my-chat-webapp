@@ -1,7 +1,5 @@
 package com.spring.study.chat.handler;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -34,21 +32,21 @@ public class ChatMessageHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		log.info("connected sessionId=" + session.getId());
-	
-		int seqId = getUser(session).getSeqId();
+		int chatRoomId = getChatRoomIdFromSession(session);
 		
-		Set<WebSocketSession> set = sessions.get(seqId);
+		Set<WebSocketSession> set = sessions.get(chatRoomId);
 		if (set == null) {
 			set = new HashSet<>();
 		}
 		set.add(session);
-		sessions.put(seqId, set);
+		sessions.put(chatRoomId, set);
 	}
 	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		log.info("session=" + session);
-		User user = getUser(session);
+		User user = getUserFromSession(session);
+		int chatRoomId = getChatRoomIdFromSession(session);
 		
 		String payload = message.getPayload();
 		InputMessage m = gson.fromJson(payload, InputMessage.class);
@@ -61,24 +59,10 @@ public class ChatMessageHandler extends TextWebSocketHandler {
 		output.setSenderId(user.getId());
 		log.info("output message=" + output);
 		
-		// '나'의 세션 중 해당 상대방 아이디 세션에게 메시지 보내기
-		for (WebSocketSession s : sessions.get(user.getSeqId())) {
-			String to = getToUserId(s);
-			if (to.equals(m.getReceiverId())) {
-				s.sendMessage(new TextMessage(gson.toJson(output)));				
-			}
-		}
-		
-		// 상대방 아이디의 세션 중 상대방이 '나'인 세션에게 메시지 보내기
-		Set<WebSocketSession> toSessions = sessions.get(m.getReceiver());
-		if (toSessions != null) {
-			for (WebSocketSession s : toSessions) {
-				String to = getToUserId(s);
-				if (to.equals(user.getId())) {
-					s.sendMessage(new TextMessage(gson.toJson(output)));					
-				}
-			}	
-		}
+		Set<WebSocketSession> set = sessions.get(chatRoomId);
+		for (WebSocketSession s : set) {
+			s.sendMessage(new TextMessage(gson.toJson(output)));
+		}	
 		
 	}
 	
@@ -87,22 +71,20 @@ public class ChatMessageHandler extends TextWebSocketHandler {
 		log.info("disconnected sessionId=" + session.getId());
 		log.info("status" + status);
 		
-		int seqId = getUser(session).getSeqId();
-		Set<WebSocketSession> set = sessions.get(seqId);
+		int chatRoomId = getChatRoomIdFromSession(session);
+		Set<WebSocketSession> set = sessions.get(chatRoomId);
 		set.remove(session);
 		if (set.size() == 0) {
-			sessions.remove(seqId);
+			sessions.remove(chatRoomId);
 		}
-		
-		log.info("session count=" + sessions.size());
 	}
 	
-	
-	private User getUser(WebSocketSession session) {
-		return (User) session.getAttributes().get("sender");
+
+	private User getUserFromSession(WebSocketSession session) {
+		return (User) session.getAttributes().get("user");
 	}
 	
-	private String getToUserId(WebSocketSession session) {
-		return (String) session.getAttributes().get("receiver");
+	private int getChatRoomIdFromSession(WebSocketSession session) {
+		return (int) session.getAttributes().get("chatRoomId");
 	}
 }

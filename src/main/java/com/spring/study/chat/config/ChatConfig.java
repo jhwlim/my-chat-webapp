@@ -15,7 +15,7 @@ public class ChatConfig implements WebSocketConfigurer {
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry
-			.addHandler(chatMessageHandler(), "/ws/{userId}")
+			.addHandler(chatMessageHandler(), "/ws/{chatRoomId}")
 			.addInterceptors(chatHandshakeInterceptor())
 			.withSockJS();
 	}

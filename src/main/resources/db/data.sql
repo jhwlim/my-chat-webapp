@@ -12,15 +12,10 @@ INSERT INTO message_text(msg_id, content) VALUES(2, "Hi");
 INSERT INTO messages(sender, receiver) VALUES(1, 2);
 INSERT INTO message_file(msg_id, path) VALUES(3, "/test.png");
 
--- 메시지 조회
--- 만약, content가 null 이라면, file
-SELECT
-	msg.*,
-    text.content as text,
-    file.path as file
-FROM
-	messages msg
-    LEFT JOIN message_text text
-    ON msg.seq_id = text.msg_id
-	LEFT JOIN message_file file
-    ON msg.seq_id = file.msg_id;
+-- 채팅방 데이터
+INSERT INTO chat_room(type) VALUES(1);
+INSERT INTO chat_user(chat_room_id, user_seq_id) VALUES(1, 1); 
+INSERT INTO chat_user(chat_room_id, user_seq_id) VALUES(1, 2); 
+INSERT INTO chat_user(chat_room_id, user_seq_id) VALUES(2, 1); 
+INSERT INTO chat_user(chat_room_id, user_seq_id) VALUES(2, 3);
+

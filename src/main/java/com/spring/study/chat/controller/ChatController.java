@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.spring.study.chat.model.ChatUser;
+import com.spring.study.chat.service.ChatUserService;
 import com.spring.study.model.User;
 import com.spring.study.user.service.UserFindService;
 
@@ -20,30 +22,32 @@ import lombok.extern.log4j.Log4j;
 public class ChatController {
 
 	@Autowired
-	UserFindService userFindService;
+	ChatUserService chatUserService;
 	
 	@GetMapping({"", "/"})
 	public String getListPage() {
 		return "chat/list";
 	}
 	
-	@GetMapping("/{id}")
-	public String getTalkPage(@PathVariable(value = "id") String id, HttpSession session, Model model) {
-		log.info("id=" + id);
-		
+	@GetMapping("/{chatRoomId}")
+	public String showChatRoom(@PathVariable(value = "chatRoomId") int chatRoomId, 
+							   HttpSession session, 
+							   Model model) {
 		User user = (User) session.getAttribute("user");
-		if (user == null || user.getId().equals(id)) {
-			log.warn("NOT LOGINED or CAN'T NOT SEND TO YOURSELF");;
-			return "redirect:/talk";
+		if (user == null) {
+			log.warn("NOT LOGINED");;
+			return "redirect:/";
 		}
 		
-		User receiver = userFindService.selectUserById(id);
-		if (receiver == null) {
-			log.warn(id + " is NOT FOUND");;
-			return "redirect:/talk";
+
+		ChatUser chatUser = new ChatUser(chatRoomId, user.getSeqId());
+		if (chatUserService.selectCountByChatRoomIdAndUserSeqId(chatUser) == 0) {
+			log.warn("NOT PERMISSION");
+			return "redirect:/";
 		}
 		
-		model.addAttribute("receiver", receiver);
+		model.addAttribute("chatRoomId", chatRoomId);
+		
 		return "chat/talk";
 	}
 	
